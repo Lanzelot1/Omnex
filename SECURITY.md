@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-Please report security vulnerabilities by emailing security@omnex.ai
+Please report security vulnerabilities by creating a private security advisory on GitHub or contacting the maintainers directly
 
 **Do not report security vulnerabilities through public GitHub issues.**
 

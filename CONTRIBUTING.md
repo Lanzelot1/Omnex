@@ -323,10 +323,10 @@ Please note that this project is released with a [Code of Conduct](CODE_OF_CONDU
 
 ## 🤔 Need Help?
 
-- Check our [documentation](https://docs.omnex.ai)
+- Check our [documentation](./docs/)
 - Search existing [issues](https://github.com/omnex-ai/omnex/issues)
 - Ask in [GitHub Discussions](https://github.com/omnex-ai/omnex/discussions)
-- Join our [Discord server](https://discord.gg/omnex)
+- Join our community discussions
 
 ---
 

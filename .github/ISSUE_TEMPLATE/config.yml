@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/omnex-ai/omnex/discussions
     about: Please ask and answer questions here.
   - name: Security Issues
-    url: mailto:security@omnex.ai
+    url: https://github.com/omnex-ai/omnex/security/advisories/new
     about: Please report security vulnerabilities here.

@@ -10,10 +10,10 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Omnex Contributors", email = "hello@omnex.ai"}
+    {name = "Omnex Contributors"}
 ]
 maintainers = [
-    {name = "Omnex Team", email = "maintainers@omnex.ai"}
+    {name = "Omnex Team"}
 ]
 keywords = ["ai", "llm", "mcp", "model-context-protocol", "knowledge-sharing", "memory-layer"]
 classifiers = [
@@ -80,11 +80,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://omnex.ai"
-Documentation = "https://docs.omnex.ai"
 Repository = "https://github.com/omnex-ai/omnex"
 Issues = "https://github.com/omnex-ai/omnex/issues"
 Discussions = "https://github.com/omnex-ai/omnex/discussions"
+Documentation = "https://github.com/omnex-ai/omnex/tree/main/docs"
 
 [project.scripts]
 omnex = "omnex.cli:main"

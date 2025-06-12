@@ -8,7 +8,7 @@
   <a href="https://github.com/omnex-ai/omnex/actions"><img src="https://github.com/omnex-ai/omnex/workflows/CI/badge.svg" alt="CI Status"></a>
   <a href="https://codecov.io/gh/omnex-ai/omnex"><img src="https://codecov.io/gh/omnex-ai/omnex/branch/main/graph/badge.svg" alt="Coverage"></a>
   <a href="https://pypi.org/project/omnex/"><img src="https://img.shields.io/pypi/v/omnex.svg" alt="PyPI version"></a>
-  <a href="https://discord.gg/omnex"><img src="https://img.shields.io/discord/1234567890.svg?label=Discord&logo=discord" alt="Discord"></a>
+  <a href="#"><img src="https://img.shields.io/discord/1234567890.svg?label=Discord&logo=discord" alt="Discord"></a>
   <a href="https://github.com/omnex-ai/omnex/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License"></a>
 </p>
 
@@ -200,10 +200,10 @@ Check out our [good first issues](https://github.com/omnex-ai/omnex/labels/good%
 
 ## 📖 Documentation
 
-- [Getting Started Guide](https://docs.omnex.ai/getting-started)
-- [API Reference](https://docs.omnex.ai/api)
-- [MCP Integration Guide](https://docs.omnex.ai/mcp)
-- [Architecture Overview](https://docs.omnex.ai/architecture)
+- [Getting Started Guide](docs/getting-started/)
+- [API Reference](docs/api-reference/)
+- [MCP Integration Guide](docs/user-guide/mcp-integration.md)
+- [Architecture Overview](docs/architecture.md)
 
 ## 🛣️ Roadmap
 

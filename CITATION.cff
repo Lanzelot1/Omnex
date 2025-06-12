@@ -4,9 +4,7 @@ message: "If you use this software, please cite it as below."
 type: software
 authors:
   - name: "Omnex Contributors"
-    email: "hello@omnex.ai"
 repository-code: "https://github.com/omnex-ai/omnex"
-url: "https://omnex.ai"
 abstract: "Omnex is a universal memory layer for AI that enables seamless context sharing between ChatGPT, Claude, and any LLM. Built on the Model Context Protocol (MCP), it provides a standardized way to manage and share knowledge across different AI systems."
 keywords:
   - artificial-intelligence

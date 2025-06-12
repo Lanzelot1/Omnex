@@ -45,8 +45,8 @@ an individual is officially representing the community in public spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-conduct@omnex.ai. All complaints will be reviewed and investigated promptly
+reported to the community leaders responsible for enforcement through
+GitHub issues or discussions. All complaints will be reviewed and investigated promptly
 and fairly.
 
 ## Attribution
