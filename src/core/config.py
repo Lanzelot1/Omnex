@@ -46,7 +46,20 @@ class Settings(BaseSettings):
         min_length=32
     )
     JWT_ALGORITHM: str = "HS256"
-    JWT_EXPIRATION_HOURS: int = 24
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+    
+    # Auth Configuration
+    ENABLE_MULTI_TENANT: bool = False
+    DEFAULT_TENANT_ID: str = "00000000-0000-0000-0000-000000000000"
+    DEFAULT_TENANT_NAME: str = "Default"
+    DEFAULT_TENANT_SLUG: str = "default"
+    
+    # Redis Auth Cache
+    REDIS_AUTH_CACHE_TTL: int = 300  # 5 minutes
+    API_KEY_CACHE_PREFIX: str = "api_key:"
+    USER_CACHE_PREFIX: str = "user:"
+    TOKEN_BLACKLIST_PREFIX: str = "blacklist:"
 
     # CORS
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:8000"]

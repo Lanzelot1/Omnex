@@ -7,21 +7,36 @@ from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from src.api import health, v1
+from src.core.cache import cache
 from src.core.config import settings
-from src.core.logging import setup_logging
+from src.core.database import init_db, close_db
+from src.core.logging import setup_logging, get_logger
 
 
 setup_logging()
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan manager."""
     # Startup
-    print(f"Starting Omnex v{settings.APP_VERSION}")
+    logger.info(f"Starting Omnex v{settings.APP_VERSION}")
+    
+    # Initialize database
+    await init_db()
+    
+    # Initialize cache
+    await cache.connect()
+    
     yield
+    
     # Shutdown
-    print("Shutting down Omnex")
+    logger.info("Shutting down Omnex")
+    
+    # Close connections
+    await cache.disconnect()
+    await close_db()
 
 
 app = FastAPI(
