@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for Omnex
 
 # Base stage
-FROM python:3.11-slim as base
+FROM python:3.13-slim as base
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -58,7 +58,7 @@ COPY . .
 RUN pip install .
 
 # Production stage
-FROM python:3.11-slim as production
+FROM python:3.13-slim as production
 
 # Install only runtime dependencies
 RUN apt-get update && apt-get install -y \
