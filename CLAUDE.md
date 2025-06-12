@@ -6,6 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Omnex is a universal memory layer for AI that enables seamless context sharing between ChatGPT, Claude, and any LLM. It's built on the Model Context Protocol (MCP) and provides a standardized way to manage and share knowledge across different AI systems.
 
+**Key Value Propositions:**
+- Persistent memory across AI sessions
+- Cross-platform context sharing (works with any LLM)
+- Semantic search capabilities for stored memories
+- Privacy-first architecture with local storage options
+
+**Technology Stack:**
+- Backend: Python 3.11, FastAPI, SQLAlchemy, Celery
+- MCP: Model Context Protocol SDK
+- Database: PostgreSQL (primary), Redis (cache/broker)
+- Testing: Pytest, coverage.py
+- CI/CD: GitHub Actions, Docker
+
 ## Key Architecture Components
 
 ### Core Services Architecture
@@ -22,8 +35,29 @@ Omnex is a universal memory layer for AI that enables seamless context sharing b
 
 ### MCP Tools Available
 - `store_context`: Store context with namespace/key organization
+  - Required: namespace (string), key (string), value (object)
+  - Optional: tags (array of strings)
 - `retrieve_context`: Get specific context by namespace and key
+  - Required: namespace (string), key (string)
 - `search_memory`: Semantic search across stored memories
+  - Required: query (string)
+  - Optional: limit (integer, default: 10)
+
+### API Endpoints Summary
+```
+GET  /                              # Root info
+GET  /health                        # Health check with service status
+GET  /health/live                   # Kubernetes liveness probe
+GET  /health/ready                  # Kubernetes readiness probe
+POST /api/v1/context/               # Create context
+GET  /api/v1/context/{namespace}    # List contexts in namespace
+GET  /api/v1/context/{namespace}/{key}  # Get specific context
+DELETE /api/v1/context/{namespace}/{key} # Delete context
+POST /api/v1/memory/                # Store memory
+GET  /api/v1/memory/{memory_id}     # Get memory by ID
+POST /api/v1/memory/search          # Search memories
+DELETE /api/v1/memory/{memory_id}   # Delete memory
+```
 
 ## Essential Development Commands
 
@@ -53,6 +87,12 @@ pytest tests/unit/test_health.py -v
 # Run single test
 pytest tests/unit/test_health.py::test_health_check -v
 
+# Run tests with output
+pytest -s -v
+
+# Run only fast tests (skip slow marked tests)
+pytest -m "not slow"
+
 # Linting only
 make lint
 
@@ -61,6 +101,12 @@ make format
 
 # Full check (lint + test)
 make check
+
+# Type checking
+mypy src --ignore-missing-imports
+
+# Security scan
+bandit -r src -ll
 ```
 
 ### Database Operations
@@ -90,11 +136,27 @@ make docker-down
 ## Configuration Management
 
 ### Environment Variables
-All configuration is managed through `.env` file (copy from `.env.example`). Key settings:
-- API keys: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`
-- Database: `DATABASE_URL` 
-- MCP: `MCP_SERVER_PORT`, `MCP_SERVER_HOST`
-- Security: `SECRET_KEY`, `JWT_SECRET_KEY` (must be 32+ chars)
+All configuration is managed through `.env` file (copy from `.env.example`). Critical settings:
+
+**Required:**
+- `SECRET_KEY`: Application secret (32+ chars)
+- `JWT_SECRET_KEY`: JWT signing key (32+ chars)
+- `DATABASE_URL`: PostgreSQL connection string
+
+**API Keys (optional but recommended):**
+- `OPENAI_API_KEY`: For OpenAI integrations
+- `ANTHROPIC_API_KEY`: For Claude integrations
+- `GOOGLE_API_KEY`: For Google AI integrations
+
+**Service Configuration:**
+- `MCP_SERVER_PORT`: MCP server port (default: 3000)
+- `MCP_SERVER_HOST`: MCP bind address (default: 0.0.0.0)
+- `REDIS_URL`: Redis connection (default: redis://localhost:6379/0)
+- `CELERY_BROKER_URL`: Celery broker (default: redis://localhost:6379/1)
+
+**Feature Flags:**
+- `RATE_LIMIT_ENABLED`: Enable API rate limiting (default: true)
+- `PROMETHEUS_ENABLED`: Enable metrics endpoint (default: true)
 
 ### Service URLs
 - FastAPI: http://localhost:8000 (docs at /docs)
@@ -145,9 +207,15 @@ Business logic should be separated from API endpoints:
 
 ### Pre-commit Hooks
 Pre-commit runs automatically on commit:
-- Python: Ruff (linting/formatting), mypy (type checking)
-- JavaScript: ESLint, Prettier
+- Python: Ruff (linting/formatting), mypy (type checking), bandit (security)
+- JavaScript/TypeScript: ESLint, Prettier
+- Markdown: markdownlint
+- Shell: shellcheck
 - General: trailing whitespace, large files, merge conflicts
+- Commit messages: commitizen (conventional commits)
+
+To run manually: `pre-commit run --all-files`
+To skip: `git commit --no-verify` (not recommended)
 
 ### Database Migrations
 When modifying models:
@@ -170,6 +238,30 @@ Development volumes are mounted for hot-reloading:
 - `./src:/app/src` - Source code
 - `./tests:/app/tests` - Tests
 - `./scripts:/app/scripts` - Utility scripts
+
+## Project Structure
+
+```
+omnex/
+├── src/
+│   ├── api/           # API endpoints
+│   │   ├── v1/        # API version 1
+│   │   └── health.py  # Health checks
+│   ├── core/          # Core utilities
+│   │   ├── config.py  # Settings management
+│   │   └── logging.py # Structured logging
+│   ├── mcp/           # MCP server
+│   ├── models/        # Database models
+│   ├── services/      # Business logic (to be created)
+│   └── main.py        # FastAPI app
+├── tests/
+│   ├── unit/          # Unit tests
+│   ├── integration/   # Integration tests
+│   └── conftest.py    # Pytest fixtures
+├── scripts/           # Utility scripts
+├── docs/              # Documentation
+└── examples/          # Usage examples
+```
 
 ## Common Issues & Solutions
 
@@ -204,3 +296,41 @@ Development volumes are mounted for hot-reloading:
 - Long-running operations use Celery
 - Redis as message broker
 - Monitor with Flower UI at port 5555
+
+## Key Design Decisions
+
+### Why MCP?
+Model Context Protocol provides a standardized way for AI assistants to access tools and data. It's becoming the industry standard for AI integrations.
+
+### Why Namespace/Key Pattern?
+Contexts are organized by namespace (e.g., project name) and key (specific context) to allow:
+- Logical grouping of related contexts
+- Easy bulk operations per namespace
+- Clear access patterns
+
+### Why Separate Context vs Memory?
+- **Context**: Structured data with explicit namespace/key (for precise retrieval)
+- **Memory**: Unstructured text with embeddings (for semantic search)
+
+### Why PostgreSQL + Redis?
+- PostgreSQL: ACID compliance for critical data
+- Redis: Fast caching and reliable message broker for Celery
+
+## Security Considerations
+
+- All endpoints require authentication (JWT tokens) - to be implemented
+- Rate limiting prevents abuse
+- Input validation via Pydantic models
+- SQL injection prevention via SQLAlchemy ORM
+- Secrets in environment variables, never in code
+- CORS configured for specific origins only
+
+## Future Enhancements Planned
+
+- Authentication/authorization system
+- WebSocket support for real-time updates
+- Vector embeddings for semantic search
+- Multi-tenancy support
+- SDK libraries for Python/JS/Go
+- Prometheus metrics dashboard
+- Admin UI for context management
