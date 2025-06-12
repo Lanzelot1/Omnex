@@ -1,0 +1,22 @@
+# This file defines code ownership for automatic PR review requests
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @omnex-ai/core-team
+
+# Python backend
+/src/ @omnex-ai/backend-team
+/tests/ @omnex-ai/backend-team
+*.py @omnex-ai/backend-team
+
+# Documentation
+/docs/ @omnex-ai/docs-team
+*.md @omnex-ai/docs-team
+
+# GitHub specific files
+/.github/ @omnex-ai/core-team
+
+# Dependencies
+requirements*.txt @omnex-ai/backend-team
+package*.json @omnex-ai/frontend-team
+pyproject.toml @omnex-ai/backend-team

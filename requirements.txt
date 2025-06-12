@@ -1,0 +1,37 @@
+# Core dependencies
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+asyncpg>=0.29.0
+redis>=5.0.0
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.7
+
+# MCP Integration
+mcp>=0.1.0
+
+# HTTP Client
+httpx>=0.26.0
+
+# File handling
+aiofiles>=23.2.1
+
+# Background tasks
+celery>=5.3.0
+
+# Monitoring & Logging
+sentry-sdk>=1.40.0
+structlog>=24.1.0
+prometheus-client>=0.19.0
+
+# Utilities
+python-dotenv>=1.0.0
+click>=8.1.7
