@@ -37,8 +37,14 @@ class Settings(BaseSettings):
     REDIS_MAX_CONNECTIONS: int = 50
 
     # Security
-    SECRET_KEY: str = Field(..., min_length=32)
-    JWT_SECRET_KEY: str = Field(..., min_length=32)
+    SECRET_KEY: str = Field(
+        default="development-secret-key-change-this-in-production-minimum-32-chars",
+        min_length=32
+    )
+    JWT_SECRET_KEY: str = Field(
+        default="jwt-development-secret-key-change-this-in-production-32",
+        min_length=32
+    )
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_HOURS: int = 24
 

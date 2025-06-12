@@ -59,13 +59,27 @@ POST /api/v1/memory/search          # Search memories
 DELETE /api/v1/memory/{memory_id}   # Delete memory
 ```
 
-## Essential Development Commands
+## Quick Start (First Time Setup)
 
-### Quick Start
 ```bash
-# Full setup (creates venv, installs deps, sets up DB)
+# 1. Clone and enter directory
+git clone https://github.com/omnex-ai/omnex.git
+cd omnex
+
+# 2. Run automated setup
 make setup
 
+# 3. Start services
+make docker-up  # Start database and Redis
+make run        # Start API server
+
+# Visit http://localhost:8000/docs
+```
+
+## Essential Development Commands
+
+### Daily Development
+```bash
 # Start all services with Docker
 make docker-up
 
@@ -74,6 +88,9 @@ make run
 
 # Run MCP server standalone
 make run-mcp
+
+# View logs
+make docker-logs
 ```
 
 ### Testing & Quality
@@ -216,6 +233,54 @@ Pre-commit runs automatically on commit:
 
 To run manually: `pre-commit run --all-files`
 To skip: `git commit --no-verify` (not recommended)
+
+### Conventional Commits
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) standard.
+
+**Commit Format:**
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Common Types:**
+- `feat`: New feature (correlates with MINOR in SemVer)
+- `fix`: Bug fix (correlates with PATCH in SemVer)
+- `docs`: Documentation only changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring without changing functionality
+- `perf`: Performance improvements
+- `test`: Adding or modifying tests
+- `build`: Changes to build system or dependencies
+- `ci`: Changes to CI configuration
+- `chore`: Other changes that don't modify src or test files
+
+**Examples:**
+```bash
+# Simple commit
+git commit -m "feat: add memory search endpoint"
+
+# With scope
+git commit -m "fix(api): handle empty namespace in context retrieval"
+
+# Breaking change
+git commit -m "feat!: change API response format"
+
+# With body
+git commit -m "refactor: reorganize context service layer
+
+Moved business logic from API endpoints to dedicated service classes.
+This improves testability and separation of concerns."
+```
+
+**Interactive Commit (Recommended):**
+```bash
+cz commit  # Use commitizen for guided commit message creation
+```
 
 ### Database Migrations
 When modifying models:
